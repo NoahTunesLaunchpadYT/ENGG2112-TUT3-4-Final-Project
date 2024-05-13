@@ -36,11 +36,11 @@ class FasterRCNNTraining:
         print("Model Initialized")
         print("Loading data")
         
-        dataset = ArtificialImageDataset(os.path.join("TrainingImages"))
-        test_dataset_visualization(dataset)
+        dataset = ArtificialImageDataset(r"C:\ENGG2110 project\ENGG2112-TUT3-4-Final-Project\TrainingImages")
+        # test_dataset_visualization(dataset)
 
         print("Dataset size:", len(dataset))
-        self.data_loader = DataLoader(dataset, batch_size=20, shuffle=True, collate_fn=collate_fn, num_workers=2)
+        self.data_loader = DataLoader(dataset, batch_size=8, shuffle=True, collate_fn=collate_fn, num_workers=2)
 
         print("Initialized")
 
@@ -106,6 +106,11 @@ class FasterRCNNTraining:
 
             self.optimizer.step()
             self.optimizer.zero_grad()
+
+              # Check if GPU memory usage exceeds a threshold before clearing cache
+            if torch.cuda.memory_reserved() / 1024**3 > 1:  # Threshold of 1 GiB, adjust as necessary
+                torch.cuda.empty_cache()
+                print("Cleared GPU cache")
 
             print(f"Batch took a time of: {round(time.time() - batchStartTime, 2)} seconds")
             print(f"Loss for batch: {loss}")
@@ -175,6 +180,7 @@ def test_dataset_visualization(dataset):
         show_image_with_boxes(image, target['boxes'])
 
 def main():
+    torch.cuda.empty_cache()
     training = FasterRCNNTraining("model.pth")
     training.trainEpochs(600)
 

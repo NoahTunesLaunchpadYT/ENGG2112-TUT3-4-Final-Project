@@ -57,7 +57,7 @@ def main():
     predictor = FasterRCNNPredict(model_path)
 
     for i in range(11, 51):
-        image_path = f"TrainingImages\\image{i}.tif"
+        image_path = f"C:\ENGG2110 project\ENGG2112-TUT3-4-Final-Project\TrainingImages\image{i}.tif"
         predictions = predictor.predict(image_path)
         predictor.show_image(image_path, predictions)
 
