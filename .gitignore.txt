@@ -1,0 +1,6 @@
+# Ignore specific model files
+model.pth
+InterruptSave.pth
+
+# Ignore everything in the "Past model" directory
+Past model/
